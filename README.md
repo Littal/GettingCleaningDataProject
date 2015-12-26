@@ -6,13 +6,14 @@ The goal is to prepare tidy data that can be used for later analysis.
 
 ## The outputs of this project are 
 
-1) a tidy data set (see description below)
-2) a link to a Github repository with a script for performing the analysis
-3) a code book that describes the variables, the data, and transformations that have been performed to clean up the data
+	1) a tidy data set (see description below)
+	2) a link to a Github repository with a script for performing the analysis
+	3) a code book that describes the variables, the data, and transformations that have been performed to clean up the data
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## About the raw data: Human activities recorded while wearing a smartphone
+## About the raw data:
+## Human activities recorded while wearing a smartphone
 
 The project data represent data collected from the accelerometers from the Samsung Galaxy S smartphone. 
 The data was originally obtained from: http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones 
@@ -39,7 +40,8 @@ Check the above mentioned URL for further details about the dataset.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## About the data set collected, worked with, and cleaned in this project
+## About the data set collected, worked with, and cleaned
+## in this project
 
 A zip file was downloaded from the following URL: 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
@@ -56,9 +58,9 @@ For additional details about the project's work flow, read bellow:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
 
-###Code for downloading zip file from URL, unziping, reading, exploring files dimentions
-###-------------------------------------------------------------------------------------
+####Code for downloading zip file from URL, unziping, reading, exploring files dimentions
 
+```{r}
 setwd("~/Data_Science_Courses/3 Getting and Cleaning Data")
 FileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 download.file(FileURL, destfile = "Human_Activity_Recognition_Using_Smartphones.zip", mode = "wb")
@@ -83,22 +85,22 @@ Ytrain <- read.table("y_train.txt")
 dim(Ytrain)
 Strain <- read.table("subject_train.txt")
 dim(Strain)
+```
 
+####Code for merging the "train" and the "test" sets to create one data set, and checking file dimention
 
-###Code for merging the "train" and the "test" sets to create one data set, and checking file dimention
-###----------------------------------------------------------------------------------------------------
-
+```{r}
 setwd("~/Data_Science_Courses/3 Getting and Cleaning Data")
 
 TestData <- cbind(Stest, Ytest, Xtest)
 TrainData <- cbind(Strain, Ytrain, Xtrain)
 RawData <- rbind(TestData, TrainData)
 dim(RawData)
+```
 
+####Code for naming data set variables, according to features file, using valid names 
 
-###Code for naming data set variables, according to features file, using valid names 
-###---------------------------------------------------------------------------------
-
+```{r}
 setwd("~/Data_Science_Courses/3 Getting and Cleaning Data/UCI HAR Dataset")
 list.files()
 Features <- read.table("features.txt")
@@ -116,22 +118,22 @@ validAllVariables <- make.names(AllVariables, unique = TRUE, allow_ = TRUE)
 
 colnames(RawData) <- validAllVariables
 names(RawData)
+```
 
+####Code for extracting only the measurements on the mean and standard deviation for each measurement
 
-###Code for extracting only the measurements on the mean and standard deviation for each measurement
-###-------------------------------------------------------------------------------------------------
-
+```{r}
 library(dplyr)
 SubsetData_S <- RawData[, 1:2]
 SubsetData_mean <- select(RawData, contains(".mean.."))
 SubsetData_std <- select(RawData, contains(".std.."))
 SubsetData <- cbind(SubsetData_S, SubsetData_mean, SubsetData_std)
 str(SubsetData)
+```
 
+####Code for Using descriptive activity names to name the activities in the data set (i.e., made it a factor variable)
 
-###Code for Using descriptive activity names to name the activities in the data set (i.e., made it a factor variable)
-###------------------------------------------------------------------------------------------------------------------
-
+```{r}
 setwd("~/Data_Science_Courses/3 Getting and Cleaning Data/UCI HAR Dataset")
 list.files()
 Activities <- read.table("activity_labels.txt")
@@ -145,10 +147,9 @@ class(SubsetData$ActivityCode)
 levels(SubsetData$ActivityCode) <- ActivitiesVec
 str(SubsetData$ActivityCode)
 summary(SubsetData$ActivityCode)
+```
 
-
-###Code for labeling the data set with descriptive variable names, (in few steps, each for every term)
-###---------------------------------------------------------------------------------------------------
+####Code for labeling the data set with descriptive variable names, (in few steps, each for every term)
 
 NewName1 <- sub("std", "STD", names(SubsetData[3:68]))
 NewName2 <- sub("mean", "MEAN", NewName1)
@@ -166,8 +167,7 @@ names(SubsetData)
 str(SubsetData)
 
 
-###Code for creating a second, independent tidy data set with the average of each variable for each activity and each subject
-###--------------------------------------------------------------------------------------------------------------------------
+####Code for creating a second, independent tidy data set with the average of each variable for each activity and each subject
 
 library(dplyr)
 SubsetData$SubjectCode <-as.factor(SubsetData$SubjectCode)
