@@ -36,24 +36,44 @@ The following description was found at that site:
 	- Its activity label. 
 	- An identifier of the subject who carried out the experiment.
 
+	The linear acceleration signal from the smartphone accelerometer in standard gravity units 'g'. 
+	The body acceleration signal obtained by subtracting the gravity from the total acceleration. 
+	The body gyroscope measures are the angular velocity vector measured by the gyroscope for each window sample. The units are radians/second. 
+	All features are normalized and bounded within [-1,1].
+
 Check the above mentioned URL for further details about the dataset. 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## About the data set collected, worked with, and cleaned
-## in this project
+## in this project, and the output txt file:
 
 A zip file was downloaded from the following URL: 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
-The R script called run_analysis.R in this repo does the following: 
+The R script called run_analysis.R in this repo does the following, in order to extract the file "SecondTidyData.txt": 
 	- Merges the training and the test sets to create one data set.
 	- Extracts only the measurements on the mean and standard deviation for each measurement. 
 	- Uses descriptive activity names to name the activities in the data set
 	- Appropriately labels the data set with descriptive variable names. 
 	- Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-For additional details about the project's work flow, read bellow:
+#### note about working directory:
+The R script "run_analysis.R" was run on the working directory "~/Data_Science_Courses/3 Getting and Cleaning Data". 
+(The working directory has been changed, though, when ever needed to explore the raw files. The relevant working directories are specified in the work flow detailed bellow).
+
+#### note about usage of dplyr package:
+The R script "run_analysis.R" included the usage of functions from the dplyr package, assuming pre instalation of this package. 
+When needed in the script, the dplyr is called.    
+
+#### note about the output txt file:  
+The file "SecondTidyData.txt" has 180 rows, each represent a pair of subject and activity in the experiment (30 subjects x 6 activities per subjects).
+The file "SecondTidyData.txt" has 68 columns. The first and second columns represent, respectively, subjects and activities. 
+The remain 66 columns are calculated means of measurments chosen to be included in data, i.e, measurements on the mean and standard deviation for each measurement of the experiment.  
+The file format is txt, in which variables are delimited by spaces. The first raw of the txt file contains the variable names.
+There is no need to run the "run_analysis.R" script in order to see the output txt file, since it is pushed to the repo for convenience.
+
+For additional details about the project's work flow, in R code, read bellow:
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
 
@@ -151,6 +171,7 @@ summary(SubsetData$ActivityCode)
 
 ####Code for labeling the data set with descriptive variable names, (in few steps, each for every term)
 
+```{r}
 NewName1 <- sub("std", "STD", names(SubsetData[3:68]))
 NewName2 <- sub("mean", "MEAN", NewName1)
 NewName3 <- sub("t", "Time", NewName2)
@@ -165,10 +186,11 @@ newAllVariables <- c(SubjectCode, ActivityCode, NewName8)
 colnames(SubsetData) <- newAllVariables
 names(SubsetData)
 str(SubsetData)
-
+```
 
 ####Code for creating a second, independent tidy data set with the average of each variable for each activity and each subject
 
+```{r}
 library(dplyr)
 SubsetData$SubjectCode <-as.factor(SubsetData$SubjectCode)
 str(SubsetData)
@@ -179,4 +201,4 @@ head(SecondTidyData, 18)
 
 setwd("~/Data_Science_Courses/3 Getting and Cleaning Data")
 write.table(SecondTidyData, file = "SecondTidyData.txt", row.name=FALSE)
-
+```
