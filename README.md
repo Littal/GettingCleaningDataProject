@@ -1,8 +1,7 @@
 # Getting and Cleaning Data - Project
 
-
-The purpose of this project is to demonstrate the ability to collect, work with, and clean a data set. 
-The goal is to prepare tidy data that can be used for later analysis. 
+	The purpose of this project is to demonstrate the ability to collect, work with, and clean a data set. 
+	The goal is to prepare tidy data that can be used for later analysis. 
 
 ## The outputs of this project are 
 
@@ -17,7 +16,7 @@ The goal is to prepare tidy data that can be used for later analysis.
 
 The project data represent data collected from the accelerometers from the Samsung Galaxy S smartphone. 
 The data was originally obtained from: http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones 
-The following description was found at that site:
+The following description was found at that site, and is valuable for understanding the work flow and output of this project:
 
 	The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years.
 	Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. 
@@ -58,19 +57,22 @@ The R script called run_analysis.R in this repo does the following, in order to 
 	- Appropriately labels the data set with descriptive variable names. 
 	- Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-#### note about working directory:
+#### Important note about running the script:
+In order to obtain the output txt file described below, the R script "run_analysis.R" must be run sequentially, with NO SKIPING on subsequent parts.
+
+#### Important note about working directory:
 The R script "run_analysis.R" was run on the working directory "~/Data_Science_Courses/3 Getting and Cleaning Data". 
 (The working directory has been changed, though, when ever needed to explore the raw files. The relevant working directories are specified in the work flow detailed bellow).
 
-#### note about usage of dplyr package:
+#### Important note about usage of dplyr package:
 The R script "run_analysis.R" included the usage of functions from the dplyr package, assuming pre instalation of this package. 
-When needed in the script, the dplyr is called.    
+When needed in the script, the function library(dplyr) is called.    
 
-#### note about the output txt file:  
+#### Important note about the output txt file:  
 The file "SecondTidyData.txt" has 180 rows, each represent a pair of subject and activity in the experiment (30 subjects x 6 activities per subjects).
 The file "SecondTidyData.txt" has 68 columns. The first and second columns represent, respectively, subjects and activities. 
 The remain 66 columns are calculated means of measurments chosen to be included in data, i.e, measurements on the mean and standard deviation for each measurement of the experiment.  
-The file format is txt, in which variables are delimited by spaces. The first raw of the txt file contains the variable names.
+The file format is txt, in which variables are delimited by space. The first raw of the txt file contains the variable names.
 There is no need to run the "run_analysis.R" script in order to see the output txt file, since it is pushed to the repo for convenience.
 
 For additional details about the project's work flow, in R code, read bellow:
